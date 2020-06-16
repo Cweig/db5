@@ -37,7 +37,13 @@ public class DBBean {
         ResultSet rs = null;
         System.out.print("--≤È—Ø”Ôæ‰:"+s+"\n");
         try {
-            rs = stmt.executeQuery(s);
+        	if(stmt == null)
+        		rs = stmt.executeQuery(s);
+        	else
+        	{
+        		Statement s1 = conn.createStatement();
+        		rs = s1.executeQuery(s);
+        	}
         } catch (Exception ex) {
             System.out.println("÷¥––≤È—Ø¥ÌŒÛ£°");
         }
@@ -76,10 +82,51 @@ public class DBBean {
     	}
     	return 0;
     }
+    
+    public synchronized int  execInsertOrder(String uid,String total,String address,String cellphone)throws SQLException
+    {
+    	ResultSet res = null;
+    	try
+    	{
+    		stmt.execute("insert into order_form values(null,'"+uid+"','"+total+"','"+address+"',"+"now(),'"+cellphone+"');");
+    		res = stmt.executeQuery("select max(oid) from order_form;");
+    		try{
+    		if(res.next())
+    			
+    			return res.getInt(1);
+    		}
+    		catch(SQLException ex)
+    		{
+    			ex.printStackTrace();
+    		}
+    	}
+    	catch(SQLException e)
+    	{
+    		System.out.println("÷¥––≤Â»Î¥ÌŒÛ£°\n"+e.getMessage());
+    		
+    	}
+    	return 0;
+    }
+    
+    public synchronized void execInsertShoppingRecord(int oid,String gid,String vid,String QTY)throws SQLException
+    {
+    	try
+    	
+    	{
+    		stmt.execute("insert into shopping_record values('"+oid+"','"+gid+"','"+vid+"','"+QTY+"');");
+    	}
+    	catch(SQLException e)
+    	{
+    		System.out.println("÷¥––≤Â»Î¥ÌŒÛ£°\n"+e.getMessage());
+    		
+    	}
+    }
+    
     public void close() {
         try {
             stmt.close();
             conn.close();
+            System.out.println("close connection");
         } catch (Exception e) {
         }
     }
