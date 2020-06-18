@@ -13,7 +13,7 @@
     <meta charset="utf-8">
     <meta name="author" content="chen">
     <title>Login</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>

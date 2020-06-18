@@ -4,9 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>提交成功</title>
+<title>购物车</title>
 </head>
 <body>
-<a href="index.jsp">返回主页</a>
+<img src='../img/green_apple.jpg'>
+<%String url="finishOrderInf.jsp?uid=1000000001&total=1990&Allin=3,1900000005,1,1,1900000006,1,"; 
+System.out.println("\ncart:\n will redirect to "+url);%>
+<a href="<%=url%>" target='_blank'>结算</a>
 </body>
 </html>

@@ -37,13 +37,7 @@ public class DBBean {
         ResultSet rs = null;
         System.out.print("--≤È—Ø”Ôæ‰:"+s+"\n");
         try {
-        	if(stmt == null)
         		rs = stmt.executeQuery(s);
-        	else
-        	{
-        		Statement s1 = conn.createStatement();
-        		rs = s1.executeQuery(s);
-        	}
         } catch (Exception ex) {
             System.out.println("÷¥––≤È—Ø¥ÌŒÛ£°");
         }
@@ -83,12 +77,12 @@ public class DBBean {
     	return 0;
     }
     
-    public synchronized int  execInsertOrder(String uid,String total,String address,String cellphone)throws SQLException
+    public synchronized int  execInsertOrder(String uid,String recipient,String total,String address,String cellphone)throws SQLException
     {
     	ResultSet res = null;
     	try
     	{
-    		stmt.execute("insert into order_form values(null,'"+uid+"','"+total+"','"+address+"',"+"now(),'"+cellphone+"');");
+    		stmt.execute("insert into order_form values(null,'"+uid+"','"+recipient+"','"+total+"','"+address+"',"+"now(),'"+cellphone+"');");
     		res = stmt.executeQuery("select max(oid) from order_form;");
     		try{
     		if(res.next())

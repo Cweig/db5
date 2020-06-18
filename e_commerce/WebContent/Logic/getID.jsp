@@ -24,7 +24,7 @@ if(id != 0)
 	String s = new String(""+id);
 	System.out.println(s);
 	request.setAttribute("id",s);
-	response.sendRedirect("return.jsp?id="+id);
+	response.sendRedirect("../UI/return.jsp?id="+id);
 }
 %>
 </body>

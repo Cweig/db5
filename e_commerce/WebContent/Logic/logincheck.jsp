@@ -21,17 +21,17 @@
         if (rs.next()) {
             try {
                 if (password.equals(rs.getObject("password"))) {
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("../UI/index.jsp");
                 } else {
                     out.print("<script language='javaScript'>alert('密码错误');</script>");
-                    response.setHeader("refresh", "0;url=login.jsp");
+                    response.setHeader("refresh", "0;url=../UI/login.jsp");
                 }
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
             }
         } else {
             out.print("<script language='javaScript'> alert('账号或密码错误');</script>");
-            response.setHeader("refresh", "0;url=login.jsp");
+            response.setHeader("refresh", "0;url=../UI/login.jsp");
         }
     } catch (SQLException sqlException) {
         sqlException.printStackTrace();

@@ -9,7 +9,7 @@
 <html>
   <head>
     <title>浏览商品</title>
-    <link rel='sheetstyle' href='css/index.css'>
+    <link rel='sheetstyle' href='./css/index.css'>
     <script type="text/javascript" src="./static/js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript">
       function x(n) {
@@ -34,13 +34,13 @@
   <%! String mid="1100000002"; String cid="F00000000001"; String gid="2";%>
 <a href='cart.jsp'>我的购物车</a>
 <div class="logo" style='text-align:center'>
-			<img src="img/mall.jpg">
+			<img src="../img/mall.jpg">
 </div>
 <div class="content">
 		<div class="img_content">
 			<ul>
 				<li>
-					<img src="img/apple.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
+					<img src="../img/apple.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
 					<div class="info">
 						<h3>苹果</h3>
 						<p>
@@ -50,7 +50,7 @@
 							<div class="price">¥ 2300</div>
 							<!-- 购物车按钮 -->
 							<div class="btn">
-									<img src="img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
+									<img src="../img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
 									<br><br>
 							</div>
 						</div>
@@ -58,7 +58,7 @@
 				</li>
 
 				<li>
-					<img src="img/iphonev1.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
+					<img src="../img/iphonev1.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
 					<div class="info">
 						<h3>iPhone</h3>
 						<p>
@@ -68,7 +68,7 @@
 							<div class="price">¥ 2300</div>
 							<!-- 购物车按钮 -->
 							<div class="btn">
-									<img src="img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
+									<img src="../img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
 									<br><br>
 							</div>
 						</div>
@@ -76,7 +76,7 @@
 				</li>
 
 				<li>
-					<img src="img/iphonev2.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
+					<img src="../img/iphonev2.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
 					<div class="info">
 						<h3>iPhone</h3>
 						<p>
@@ -87,7 +87,7 @@
 							<div class="price">¥ 2300</div>
 							<!-- 购物车按钮 -->
 							<div class="btn">
-									<img src="img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
+									<img src="../img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
 									<br><br>
 							</div>
 						</div>
@@ -95,7 +95,7 @@
 				</li>
 
 				<li>
-					<img src="img/apple.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
+					<img src="../img/apple.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
 					<div class="info">
 						<h3>无名女郎</h3>
 						<p>
@@ -106,7 +106,7 @@
 							<div class="price">¥ 2300</div>
 							<!-- 购物车按钮 -->
 							<div class="btn">
-									<img src="img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
+									<img src="../img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
 									<br><br>
 							</div>
 						</div>
@@ -114,18 +114,18 @@
 				</li>
 
 				<li>
-					<img src="img/apple.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
+					<img src="../img/apple.jpg" alt="图片文本描述" width="300" height="200" onclick="send('<%=mid%>','<%=cid%>','<%=gid%>')">
 					<div class="info">
 						<h3>无名女郎</h3>
 						<p>
 							图片描述可以分为多种，这里是一个关于展示的板块，这里是一个关于展示的板块，这里是一个关于展示的板块，这里是一个关于展示的板块，这里是一个关于展示的板块
 						</p>
-						<div class="img_btn"> 
+						<div class="./img_btn"> 
 							<!-- 价格，购买logo -->
 							<div class="price">¥ 2300</div>
 							<!-- 购物车按钮 -->
 							<div class="btn">
-									<img src="img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
+									<img src="../img/cart.jpg" width="75" height="40" onclick="openCart('<%=mid%>','<%=cid%>','<%=gid%>')">
 							</div>
 						</div>
 					</div>

@@ -15,6 +15,7 @@ request.setCharacterEncoding("UTF-8");
 String uid=request.getParameter("uid");
 String total=request.getParameter("total");
 String Allin=request.getParameter("Allin");
+String recipient=request.getParameter("name");
 String address=request.getParameter("address");
 String cellphone = request.getParameter("cellphone");
 ////
@@ -23,6 +24,7 @@ System.out.println("\ncreateOrder:");
 System.out.println(uid);
 System.out.println(total);
 System.out.println(Allin);
+System.out.println(recipient);
 System.out.println(address);
 System.out.println(cellphone);
 
@@ -64,9 +66,10 @@ String AllPhotoPath="";
 String AllPrice="";
 String AllDesc="";
 String AllQTY="";
+ResultSet res;
 for(int i = 0; i< size;i++)
 {
-	ResultSet res = db.executeQuery("select price,stock,photo_path from version where gid="+gidSet.get(i)+" and vid="+vidSet.get(i)+";");
+	res = db.executeQuery("select price,stock,photo_path from version where gid="+gidSet.get(i)+" and vid="+vidSet.get(i)+";");
 		try
 		{
 			if(res.next())
@@ -76,7 +79,7 @@ for(int i = 0; i< size;i++)
 					res.close();
 					enough = false;
 					System.out.println("库存不足");
-					response.sendRedirect("fail.jsp");
+					response.sendRedirect("../UI/fail.jsp");
 					break;
 				}
 				AllPrice=AllPrice+res.getString("price")+",";
@@ -88,9 +91,15 @@ for(int i = 0; i< size;i++)
 		{
 			System.out.println("查询图片与库存出错");
 		}
-	
-	///查询商品描述
-	res=db.executeQuery("select description from goods where gid="+gidSet.get(i)+";");
+		
+	///顺便操作一下
+	AllQTY=AllQTY+QTYSet.get(i)+",";
+}
+///
+
+///查询商品描述
+for(int i = 0; i < size;i++)
+{	res=db.executeQuery("select description from goods where gid="+gidSet.get(i)+";");
 	try
 	{
 		if(res.next())
@@ -103,50 +112,24 @@ for(int i = 0; i< size;i++)
 	{
 		System.out.println("查询商品描述出错");
 	}
-	///
-	
-	///顺便操作一下
-	AllQTY=AllQTY+QTYSet.get(i)+",";
 }
 ///
 
-///插入订单，取得订单号
-if(enough)
-{
-	int oid = db.execInsertOrder(uid, total, address, cellphone);
-	System.out.println(oid);
-	///
 
-	///写购买记录
-	if(oid!=0)
-	{
-		int i = 0;
-		while(i < size)
-		{
-			db.execInsertShoppingRecord(oid, gidSet.get(i), vidSet.get(i), QTYSet.get(i));
-			i++;
-		}
-		System.out.println("will redirect to ordercheck.jsp");
-
-		///自动提交表单给ordercheck
-		System.out.println("oid:"+oid);
-		System.out.println("total:"+total);
-		System.out.println("AllPhotoPath:"+AllPhotoPath);
-		System.out.println("AllPrice:"+AllPrice);
-		System.out.println("AllDesc:"+AllDesc);
-		System.out.println("AllQTY:"+AllQTY);
-		out.write("<form action='ordercheck.jsp' method='post' id='form'>"+
-						"<input type='password' name='oid' value='"+oid+"'>"+
-						"<input type='password' name='total' value='"+total+"'>"+
-						"<input type='password' name = 'AllPhotoPath' value='"+AllPhotoPath+"'>"+
-						"<input type='password' name='AllPrice' value='"+AllPrice+"'>"+
-						"<input type='password' name='AllDesc' value='"+AllDesc+"'>"+
-						"<input type='password' name='AllQTY' value='"+AllQTY+"'>"+
+		///自动提交表单
+		out.write("<form action='../UI/ordercheck.jsp' method='post' id='form'>"+
+						"<input type='hidden' name = 'AllPhotoPath' value='"+AllPhotoPath+"'>"+
+						"<input type='hidden' name='AllPrice' value='"+AllPrice+"'>"+
+						"<input type='hidden' name='AllDesc' value='"+AllDesc+"'>"+
+						"<input type='hidden' name='AllQTY' value='"+AllQTY+"'>"+
+						"<input type='hidden' name='uid' value='"+uid+"'>"+
+						"<input type='hidden' name='recipient' value='"+recipient+"'>"+
+						"<input type='hidden' name='total' value='"+total+"'>"+
+						"<input type='hidden' name='address' value='"+address+"'>"+
+						"<input type='hidden' name='cellphone' value='"+cellphone+"'>"+
+						"<input type='hidden' name='Allin' value='"+Allin+"'>"+
 						"<input type='submit' ></form><script language='javascript'>document.getElementById('form').submit();</script>");
 		///
-	}
-	///
-}
 %>
 </body>
 </html>

@@ -7,13 +7,13 @@
     <meta charset="utf-8">
     <meta name="author" content="chen">
     <title>Login</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 <div class="container">
     <h1>Sign In</h1>
-    <form action="logincheck.jsp">
+    <form action="../Logic/logincheck.jsp">
         <div class="input-wrapper">
             <div class="border-wrapper">
                 <input class="input-item" type="text" name="uid" placeholder="USERID">
@@ -28,7 +28,7 @@
             <input class="btn" type="submit" value="登录">
         </div>
     </form>
-    <form action="register.jsp">
+    <form action="../Logic/register.jsp">
         <div class="btn-wrapper">
             <input class="btn" type="submit" value="注册">
         </div>

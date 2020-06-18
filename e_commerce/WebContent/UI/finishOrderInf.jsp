@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link rel="stylesheet" href="css/order_style.css" />
+<link rel="stylesheet" href="../css/order_style.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>填写订单</title>
 </head>
@@ -19,12 +19,12 @@ System.out.println(uid);
 System.out.println(total);
 System.out.println(Allin);
 
-System.out.println("will redirect to cresteOrder.jsp");
+System.out.println("will redirect to ../Logic/cresteOrder.jsp");
 %>
-<body background='img/background.jpg'>
+<body background='../img/background.jpg'>
 <div class="Box">
 	<div class="cont">
-		<form action='createOrder.jsp' method='post'>
+		<form action='../Logic/createOrder.jsp' method='post'>
 			<!-- 不知道要不要考虑收件人，以及订单的取消 -->
 			<table>
 				<tr><td>
