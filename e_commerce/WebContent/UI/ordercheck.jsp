@@ -11,7 +11,8 @@
 request.setCharacterEncoding("UTF-8");
 String uid = request.getParameter("uid");
 String total=request.getParameter("total");
-String money = total.subSequence(0, total.length()-2)+"."+total.substring(total.length()-2);
+String money = total.subSequence(0,total.length()-2)+"."+total.substring(total.length()-2);
+
 String AllPhotoPath = request.getParameter("AllPhotoPath");
 String AllPrice = request.getParameter("AllPrice");
 String AllDesc = request.getParameter("AllDesc");
@@ -103,16 +104,14 @@ System.out.println("qty list's size:"+QTYList.size());
         			<th class="cell-total">小计</th>
     			</tr>
     			<%
-    			String price ="";
-    			String cell_total="";
+    			String cell_total;
+    			String price;
 						for(int i= 0; i < pathList.size();i++)
 						{	
 							price=priceList.get(i);
 							
-							cell_total=""+(Integer.parseInt(price)*Integer.parseInt(QTYList.get(i)));
-							cell_total = cell_total.subSequence(0, cell_total.length()-2)+"."+cell_total.substring(cell_total.length()-2);
-							
-							price = price.subSequence(0, price.length()-2)+"."+price.substring(price.length()-2);
+							cell_total=Integer.toString(Integer.parseInt(price)*Integer.parseInt(QTYList.get(i)));
+
 							out.print(
 									  "<tr>"+
        				                      "<td class='cell-img'>"+
@@ -124,9 +123,9 @@ System.out.println("qty list's size:"+QTYList.size());
             								"<a class='link' href='showGoods?gid' target='_blank'>"+descList.get(i)+
            							 		"</a>"+
         								  "</td>"+
-        								  "<td class='cell-price'>¥"+price+"</td>"+
+        								  "<td class='cell-price'>¥"+price.subSequence(0, price.length()-2)+"."+price.substring(price.length()-2)+"</td>"+
        									  "<td class='cell-count'>"+QTYList.get(i)+"</td>"+
-        								  "<td class='cell-total'>¥"+cell_total+"</td>"+
+        								  "<td class='cell-total'>¥"+cell_total.subSequence(0, cell_total.length()-2)+"."+cell_total.substring(cell_total.length()-2)+"</td>"+
     								  "</tr>");
 						}
 				%>

@@ -51,7 +51,44 @@ public class DBBean {
             System.out.println("执行查询错误！");
         }
     }
-
+    
+    public synchronized void execInsert(String sql) throws SQLException {
+        ResultSet rs=null;
+        System.out.println("--插入语句:"+sql);
+        try{
+            stmt.execute(sql);
+            System.out.println("插入成功");
+        }
+        catch (SQLException ex){
+            System.out.println("执行插入错误！");
+            ex.printStackTrace();
+        }
+    }
+    
+	public synchronized void  execUpdateCartGoods(String uid,String gid,String vid,int QTY)
+    {
+    	ResultSet res=null;
+    	try
+    	{
+    		res=stmt.executeQuery("select qty from shopping_cart where uid="+uid+" and gid="+gid+" and vid="+vid+";");
+    		if(res.next())
+    		{
+    			String basicqty=res.getString("qty").trim();
+    			int basic_qty=Integer.parseInt(basicqty);
+    			stmt.execute("update shopping_cart set qty="+(basic_qty+QTY)+" where uid="+uid+" and vid="+vid+" and gid="+gid+";");
+    		}
+    		else if(QTY<0)
+    		{
+    			return;
+    		}
+    		else
+    			stmt.execute("insert into shopping_cart (uid,gid,vid,qty) values("+uid+","+gid+","+vid+","+QTY+");");
+    	}
+    	catch(SQLException ex)
+    	{
+    		System.out.println(ex.getMessage());
+    	}
+    }
     public synchronized int  execInsertUser(String name,String pwd,String gender,String cellphone,String address)throws SQLException
     {
     	ResultSet res = null;
@@ -102,19 +139,6 @@ public class DBBean {
     	return 0;
     }
     
-    public synchronized void execInsertShoppingRecord(int oid,String gid,String vid,String QTY)throws SQLException
-    {
-    	try
-    	
-    	{
-    		stmt.execute("insert into shopping_record values('"+oid+"','"+gid+"','"+vid+"','"+QTY+"');");
-    	}
-    	catch(SQLException e)
-    	{
-    		System.out.println("执行插入错误！\n"+e.getMessage());
-    		
-    	}
-    }
     
     public void close() {
         try {

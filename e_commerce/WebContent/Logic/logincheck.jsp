@@ -21,7 +21,7 @@
         if (rs.next()) {
             try {
                 if (password.equals(rs.getObject("password"))) {
-                    response.sendRedirect("../UI/index.jsp");
+                    response.sendRedirect("../UI/goods.jsp");
                 } else {
                     out.print("<script language='javaScript'>alert('密码错误');</script>");
                     response.setHeader("refresh", "0;url=../UI/login.jsp");
