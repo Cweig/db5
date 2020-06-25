@@ -1,19 +1,11 @@
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" import="java.sql.*,bean.Lin" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" import="java.sql.*,bean.Lin" %>
 <html>
 <head>
     <title>加入购物车</title>
-<%--    <script type="text/javascript">
-        function close() {window.parent.close();}
-        function pageclose() {
-            window.opener = null;
-            window.open('', '_self');//注意：第一个是一对单引号
-            window.close();
-        }测试函数，没有实际用途
-    </script>--%>
+    <link href="../css/addCart.css" type="text/css" rel="stylesheet">
     <script type="text/javascript">
         function goToCart(uid) {
-            alert("进入购物车");
             window.open("./cart.jsp?Parauid="+uid);
         }
     </script>
@@ -27,46 +19,51 @@
     }
 %>
 <%
+	request.setCharacterEncoding("utf-8");
     String gid=request.getParameter("gid");
     String vid=request.getParameter("vid");
-    String uid=request.getParameter("uid");
+    String uid=(String) application.getAttribute("activelogin");
     String qty=request.getParameter("num");
+    String name = request.getParameter("goodsName");
+    System.out.println(name);
     //购买的数量
-    Lin lin=new Lin();
-    ResultSet Goods_name=lin.getStmt().executeQuery("select name from goods where gid="+gid);
-    String gname="";
-    //商品的名字
-    while(Goods_name.next())
-        gname=Goods_name.getString(1);
 
 %>
-<h2>您选择的商品：<%=gname%></h2>
+<h2>您选择的商品：<%=name%></h2>
 <%
-    ResultSet goods_mess = lin.getStmt().executeQuery("select * from version where vid="+vid);
-    while (goods_mess.next())
-        out.print("<h2>颜色："+goods_mess.getString(6)+" 重量："+goods_mess.getString(7)+"克，其他属性： "+show(goods_mess.getString(8))+" "+show(goods_mess.getString(9))+" "+show(goods_mess.getString(10))+" 数量："+qty+"</h2>");
-    out.print("<h2>已经加入购物车！</h2><br>");
-    String exist_sql="select * from shopping_cart where uid="+uid+" and gid="+gid+" and vid="+vid;
-    //搜索表中是否已经有这个商品的记录
-    //out.println(exist_sql);
-    ResultSet exist = lin.getStmt().executeQuery(exist_sql);
-    if(!exist.next()){
-        String insert_sql="insert into shopping_cart value("+uid+","+gid+","+vid+","+qty+")";
-        //out.println(insert_sql);
-        lin.getStmt().executeUpdate(insert_sql);
-        //购物车中不存在这条记录就直接添加
-    }else{
-        int nowqty=exist.getInt(4)+Integer.parseInt(qty);
-        String up_sql="update shopping_cart set qty="+nowqty+" where uid="+uid+" and gid="+gid+" and vid="+vid;
-        //out.println(up_sql);
-        lin.getStmt().executeUpdate(up_sql);
-        //购物车中存在这条记录就增加数量
+	Lin lin = new Lin();
+    try
+    {
+    	ResultSet goods_mess = lin.getStmt().executeQuery("select * from version where vid="+vid);
+ 
+    	if(goods_mess.next())
+    	{	
+    		out.print("<h2>颜色："+goods_mess.getString(6)+"，重量："+goods_mess.getString(7)+"克，其他属性： "+show(goods_mess.getString(8))+" "+show(goods_mess.getString(9))+" "+show(goods_mess.getString(10))+"  数量："+qty+"件</h2>");
+   			out.print("<h2>已经加入购物车！</h2><br>");
+    		goods_mess.close();
+    	}
+
+    	int sum = Integer.parseInt(qty);//最终可能的数量
+    
+    	String exist_sql="select qty from shopping_cart where uid="+uid+" and gid="+gid+" and vid="+vid;
+    	//搜索表中是否已经有这个商品的记录,如果有可以获取到数量
+    	ResultSet exist = lin.getStmt().executeQuery(exist_sql);
+    	if(exist.next()){
+        	sum  +=exist.getInt("qty");
+        	System.out.println("qty is "+sum);
+        	exist.close();
+    	}
+    	lin.getStmt().execute("replace into shopping_cart (uid,gid,vid,qty) values ("+uid+","+gid+","+vid+","+sum+");");
     }
-
+    catch(SQLException e)
+    {
+    	System.out.println("加入购物车失败！"+e.getMessage());
+    }
+    finally
+    {
+    	lin.close();
+    }
 %>
-<input type="button" value="查看我的购物车" onclick="goToCart(<%=uid%>)">
-
-<%--<a href="javascript:window.opener=null;window.open('','_self');window.close();">关闭</a>
-<input type="button" id="clo" value="关闭当前界面" onclick="close()">--%>
+<a id="aToCart" onclick="goToCart(<%=uid%>)">查看购物车</a>
 </body>
 </html>

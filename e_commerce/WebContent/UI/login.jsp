@@ -28,7 +28,7 @@
             <input class="btn" type="submit" value="登录">
         </div>
     </form>
-    <form action="../Logic/register.jsp">
+    <form action="./register.jsp">
         <div class="btn-wrapper">
             <input class="btn" type="submit" value="注册">
         </div>

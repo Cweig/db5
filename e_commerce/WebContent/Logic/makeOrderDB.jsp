@@ -29,63 +29,71 @@ System.out.println("address:"+address);
 System.out.println("cellphone:"+cellphone);
 System.out.println("Allin:"+Allin);
 System.out.println("AllQTY:"+AllQTY);
+
 ///从Allin中解析gid,vid,QTY
 ArrayList<String> gidSet= new ArrayList<String>();
 ArrayList<String> vidSet= new ArrayList<String>();
 ArrayList<String> QTYSet = new ArrayList<String>();
 
 int index = 0;
-int length = Allin.length();
-int begin = index;
 
-while(index < length)
+String [] all = Allin.split(",");
+while(index < all.length)
 {
-	begin = index;
-	
-	while(Allin.charAt(++index)!=',');
-	
-	gidSet.add(Allin.substring(begin,index));
-	index++;
-	vidSet.add(Allin.substring(index,index+=10));
-	index++;
-	begin = index;
-	
-	while(Allin.charAt(++index)!=',');
-	
-	QTYSet.add(Allin.substring(begin,index));
-	
+	gidSet.add(all[index++]);
+	vidSet.add(all[index++]);
+	QTYSet.add(all[index++]);
 	index++;
 }
 ///
 
 ///查询库存
 index = 0;
-int size = gidSet.size();
+int size = vidSet.size();
 ResultSet stock;
+String stmt = "select vid,stock from version  where vid = "+vidSet.get(0);
+for(int i = 1; i < size;i++)
+{
+	stmt = stmt + " or vid="+vidSet.get(i);
+}
+stmt+=";";
 
-	while(index<size)
-	{	
-		stock = db.executeQuery("select stock from version where vid="+vidSet.get(index)+";");
+int vid,qty;
+stock = db.executeQuery(stmt);
 		try
 		{
-			System.out.println("check stock");
-			if(stock.next())
-			{	if(Integer.parseInt(stock.getString("stock")) < Integer.parseInt(QTYSet.get(index)))
-				{	
-					System.out.println("will redirect to fail.jsp");
-					response.sendRedirect("../UI/fail.jsp");
-					
+			while(stock.next())
+			{	
+				index=0;
+				vid = stock.getInt("vid");
+				for(; index < size;index++)
+				{
+					if(Integer.parseInt(vidSet.get(index))==vid)
+					{	
+						System.out.println("find index "+index);
+						break;
+					}
 				}
-				System.out.println("库存足够");
-			}			
+				
+				//临时变量保存数量
+				qty=Integer.parseInt(QTYSet.get(index));
+				
+				if(qty > stock.getInt("stock"))
+				{
+					stock.close();
+					System.out.println("库存不足");
+					response.sendRedirect("../UI/fail.jsp");
+				}
+			}
 		}
 		catch(SQLException ex)
 		{
 			System.out.println("查询库存出错"+ex.getMessage());
 		}
-		
-		index++;
-	}
+		finally
+		{
+			stock.close();
+		}
 ///
 
 	///写订单记录
@@ -95,13 +103,18 @@ ResultSet stock;
 
 	///写购买记录
 	index=0;
+	
 	if(oid!=0)
 	{
+		stmt = "insert into shopping_record values("+oid+","+ gidSet.get(0)+","+ vidSet.get(0)+","+ QTYSet.get(0)+")";
+		index++;
 		while(index < size)
 		{
-			db.execInsert("insert into shopping_record value("+oid+","+ gidSet.get(index)+","+ vidSet.get(index)+","+ QTYSet.get(index)+");");
+			stmt+=",("+oid+","+ gidSet.get(index)+","+ vidSet.get(index)+","+ QTYSet.get(index)+")";
 			index++;
 		}
+		stmt+=";";
+		db.execInsert(stmt);
 	}
 	else
 		response.setHeader("refresh","../UI/fail.jsp");
@@ -109,10 +122,16 @@ ResultSet stock;
 
 	///开始订货
 	System.out.println("开始订货");
-	for(int i = 0; i < size;i++)
+	stmt = "update version set stock= case vid when "+vidSet.get(0)+" then "+"stock-"+QTYSet.get(0);
+	String range = "("+vidSet.get(0);
+	for(int i = 1; i < size;i++)
 	{
-		db.executeUpdate("update version set stock=stock-"+QTYSet.get(i)+" where vid="+vidSet.get(i)+";");
+		stmt += " when "+vidSet.get(i)+" then "+"stock-"+QTYSet.get(i);
+		range+=","+vidSet.get(i);
 	}
+	stmt = stmt + " end where vid in"+range+");";
+	System.out.println(stmt);
+	db.executeUpdate(stmt);
 	db.close();
 
 	System.out.println("will redirect to ../UI/success.jsp");

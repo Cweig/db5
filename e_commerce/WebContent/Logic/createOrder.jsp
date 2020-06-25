@@ -13,7 +13,6 @@
 ////获取请求的参数信息
 request.setCharacterEncoding("UTF-8");
 String uid=request.getParameter("uid");
-String total=request.getParameter("total");
 String Allin=request.getParameter("Allin");
 String recipient=request.getParameter("name");
 String address=request.getParameter("address");
@@ -22,39 +21,25 @@ String cellphone = request.getParameter("cellphone");
 
 System.out.println("\ncreateOrder:");
 System.out.println(uid);
-System.out.println(total);
 System.out.println(Allin);
 System.out.println(recipient);
 System.out.println(address);
 System.out.println(cellphone);
 
-///从Allin中解析gid,vid,QTY
+///从Allin中解析gid,vid,QTY,cellTotal
 ArrayList<String> gidSet= new ArrayList<String>();
 ArrayList<String> vidSet= new ArrayList<String>();
 ArrayList<String> QTYSet = new ArrayList<String>();
+ArrayList<String> cellTotalSet = new ArrayList<String>();
 
+String [] all = Allin.split(",");
 int index = 0;
-int length = Allin.length();
-
-int begin = index;
-
-while(index < length)
+while(index < all.length)
 {
-	begin = index;
-	
-	while(Allin.charAt(++index)!=',');
-	
-	gidSet.add(Allin.substring(begin,index));
-	index++;
-	vidSet.add(Allin.substring(index,index+=10));
-	index++;
-	begin = index;
-	
-	while(Allin.charAt(++index)!=',');
-	
-	QTYSet.add(Allin.substring(begin,index));
-	
-	index++;
+	gidSet.add(all[index++]);
+	vidSet.add(all[index++]);
+	QTYSet.add(all[index++]);
+	cellTotalSet.add(all[index++]);
 }
 ///
 
@@ -66,54 +51,68 @@ String AllPhotoPath="";
 String AllPrice="";
 String AllDesc="";
 String AllQTY="";
+String AllCellTotal="";
+int total = 0;
+int price ;
+int qty;
 ResultSet res;
-for(int i = 0; i< size;i++)
+String stmt = "select vid,price,stock,photo_path,description from version natural join goods where vid = "+vidSet.get(0);
+for(int i = 1; i < size;i++)
 {
-	res = db.executeQuery("select price,stock,photo_path from version where gid="+gidSet.get(i)+" and vid="+vidSet.get(i)+";");
+	stmt = stmt + " or vid="+vidSet.get(i);
+}
+stmt+=";";
+int vid;
+res = db.executeQuery(stmt);
 		try
 		{
-			if(res.next())
+			while(res.next())
 			{	
-				if(Integer.parseInt(QTYSet.get(i)) > Integer.parseInt(res.getString("stock")))
+				index=0;
+				vid = res.getInt("vid");
+				for(; index < size;index++)
+				{
+					if(Integer.parseInt(vidSet.get(index))==vid)
+					{	
+						System.out.println("find index "+index);
+						break;
+					}
+				}
+				
+				//临时变量保存单价与数量
+				price = res.getInt("price");
+				qty=Integer.parseInt(QTYSet.get(index));
+				total += price * qty;//计算总金额
+				
+				if(qty > res.getInt("stock"))
 				{
 					res.close();
 					enough = false;
 					System.out.println("库存不足");
 					response.sendRedirect("../UI/fail.jsp");
-					break;
 				}
-				AllPrice=AllPrice+res.getString("price")+",";
+				
+				
+				//把确认订单所需的商品信息（单价，图片路径，数量，小计,描述）封装起来，用于返回给确认订单页面
 				AllPhotoPath=AllPhotoPath+res.getString("photo_path")+",";
+				AllPrice=AllPrice+res.getString("price")+",";
+				AllDesc = AllDesc + res.getString("description")+"|";
+				AllQTY=AllQTY+qty+",";
+				AllCellTotal=AllCellTotal+cellTotalSet.get(index)+",";
 			}
 			
 		}
 		catch(SQLException e)
 		{
-			System.out.println("查询图片与库存出错");
+			System.out.println("查询商品单价，图片与库存出错");
 		}
-		
-	///顺便操作一下
-	AllQTY=AllQTY+QTYSet.get(i)+",";
-}
+		finally
+		{
+			res.close();
+			db.close();
+		}
 ///
 
-///查询商品描述
-for(int i = 0; i < size;i++)
-{	res=db.executeQuery("select description from goods where gid="+gidSet.get(i)+";");
-	try
-	{
-		if(res.next())
-		{	
-			AllDesc=AllDesc+res.getString("description")+"^";//不确定商品描述是否会出现这个符号，比起其他符号，这个出现的频率应该较小
-		}
-		
-	}
-	catch(SQLException e)
-	{
-		System.out.println("查询商品描述出错");
-	}
-}
-///
 
 
 		///自动提交表单
@@ -122,9 +121,10 @@ for(int i = 0; i < size;i++)
 						"<input type='hidden' name='AllPrice' value='"+AllPrice+"'>"+
 						"<input type='hidden' name='AllDesc' value='"+AllDesc+"'>"+
 						"<input type='hidden' name='AllQTY' value='"+AllQTY+"'>"+
+						"<input type='hidden' name='AllCellTotal' value='"+AllCellTotal+"'>"+
+						"<input type='hidden' name='total' value='"+total+"'>"+
 						"<input type='hidden' name='uid' value='"+uid+"'>"+
 						"<input type='hidden' name='recipient' value='"+recipient+"'>"+
-						"<input type='hidden' name='total' value='"+total+"'>"+
 						"<input type='hidden' name='address' value='"+address+"'>"+
 						"<input type='hidden' name='cellphone' value='"+cellphone+"'>"+
 						"<input type='hidden' name='Allin' value='"+Allin+"'>"+

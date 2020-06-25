@@ -1,0 +1,31 @@
+.showone{
+    border: brown 2px double;
+
+    background-color: skyblue;
+}
+
+.showtwo{
+    border: brown 2px double;
+    width: 49%;
+    background-color: skyblue;
+    float:left
+}
+body{
+    background-color: #beffc6;
+}
+
+
+.displaymess{
+
+    position: relative;
+    background: #aaa;
+    padding: 5px;
+    float: left;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+.displaymess:active { background-color: #444; }
+.displaymess:hover { background-color: #a00; }

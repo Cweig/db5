@@ -22,17 +22,6 @@ public class DBBean {
 
     }
 
-    public synchronized int executeUpdate(String s) {
-        int result = 0;
-        System.out.println("--更新语句:"+s+"\n");
-        try {
-            result = stmt.executeUpdate(s);
-        } catch (Exception ex) {
-            System.out.println("执行更新错误！");
-        }
-        return result;
-    }
-
     public synchronized ResultSet executeQuery(String s) {
         ResultSet rs = null;
         System.out.print("--查询语句:"+s+"\n");
@@ -52,17 +41,15 @@ public class DBBean {
         }
     }
     
-    public synchronized void execInsert(String sql) throws SQLException {
-        ResultSet rs=null;
-        System.out.println("--插入语句:"+sql);
-        try{
-            stmt.execute(sql);
-            System.out.println("插入成功");
+    public synchronized int executeUpdate(String s) {
+        int result = 0;
+        System.out.println("--更新语句:"+s+"\n");
+        try {
+            result = stmt.executeUpdate(s);
+        } catch (Exception ex) {
+            System.out.println("执行更新错误！");
         }
-        catch (SQLException ex){
-            System.out.println("执行插入错误！");
-            ex.printStackTrace();
-        }
+        return result;
     }
     
 	public synchronized void  execUpdateCartGoods(String uid,String gid,String vid,int QTY)
@@ -89,6 +76,20 @@ public class DBBean {
     		System.out.println(ex.getMessage());
     	}
     }
+	
+	public synchronized void execInsert(String sql) throws SQLException {
+        ResultSet rs=null;
+        System.out.println("--插入语句:"+sql);
+        try{
+            stmt.execute(sql);
+            System.out.println("插入成功");
+        }
+        catch (SQLException ex){
+            System.out.println("执行插入错误！");
+            ex.printStackTrace();
+        }
+    }
+	
     public synchronized int  execInsertUser(String name,String pwd,String gender,String cellphone,String address)throws SQLException
     {
     	ResultSet res = null;
@@ -119,7 +120,7 @@ public class DBBean {
     	ResultSet res = null;
     	try
     	{
-    		stmt.execute("insert into order_form values(null,'"+uid+"','"+recipient+"','"+total+"','"+address+"',"+"now(),'"+cellphone+"');");
+    		stmt.execute("insert into order_form value(null,'"+uid+"','"+recipient+"','"+total+"','"+address+"',"+"now(),'"+cellphone+"');");
     		res = stmt.executeQuery("select max(oid) from order_form;");
     		try{
     		if(res.next())

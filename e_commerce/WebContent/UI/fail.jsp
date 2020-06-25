@@ -21,7 +21,6 @@
 <div style='text-align:center;font-family:宋体;'>
 	<h2 >库存不足，请检查商品数量</h2>
 </div>
-
 <script>
 window.setTimeout("close()",5000);
 </script>

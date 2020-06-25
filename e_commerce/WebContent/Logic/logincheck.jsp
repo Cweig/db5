@@ -21,7 +21,7 @@
         if (rs.next()) {
             try {
                 if (password.equals(rs.getObject("password"))) {
-                    response.sendRedirect("../UI/goods.jsp");
+                    response.sendRedirect("../UI/goods.jsp?uid="+uid);
                 } else {
                     out.print("<script language='javaScript'>alert('密码错误');</script>");
                     response.setHeader("refresh", "0;url=../UI/login.jsp");
@@ -36,6 +36,11 @@
     } catch (SQLException sqlException) {
         sqlException.printStackTrace();
     }
+   	finally
+   	{
+   		rs.close();
+   		db.close();
+   	}
 
 %>
 </body>

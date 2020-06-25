@@ -1,0 +1,46 @@
+
+myc {
+    color: blue;
+    position: relative;
+    z-index: 1;
+    height: 20px;
+}
+myc::before,
+myc::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #262626;
+    transform: scaleX(0);
+    transition: transform 0.2s ease-in-out;
+}
+
+myc::before {
+    top: 0;
+    transform-origin: center right;
+}
+
+myc::after {
+    bottom: 0;
+    transform-origin: center left;
+}
+
+myc:hover {
+    cursor: pointer;
+    color: red;
+}
+
+myc:hover::before {
+    transform-origin: center left;
+    transform: scaleX(1);
+
+}
+
+myc:hover::after {
+    transform-origin: center right;
+    transform: scaleX(1);
+
+}

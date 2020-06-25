@@ -42,7 +42,7 @@
 
 		
 		rs.close();
-
+		db.close();
 		
 
 		
@@ -80,7 +80,7 @@
 
 		
 		rs.close();
-
+		db.close();
 		//重定向到购物车页面
 
 		response.sendRedirect("../UI/cart.jsp?Parauid="+uid);
