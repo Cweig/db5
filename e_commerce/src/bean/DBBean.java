@@ -77,6 +77,33 @@ public class DBBean {
     	}
     }
 	
+	 public synchronized void  execChangeCartGood(String uid,String gid,String vid,int QTY)
+	    {
+	    	ResultSet res=null;
+	    	try
+	    	{
+	    		res=stmt.executeQuery("select qty from shopping_cart where uid="+uid+" and gid="+gid+" and vid="+vid+";");
+	    		if(res.next())
+	    		{
+	    			stmt.execute("update shopping_cart set qty="+QTY+" where uid="+uid+" and vid="+vid+" and gid="+gid+";");
+	    		}
+	    		else if(QTY==0)
+	    		{
+	    			stmt.execute("delete from shopping_cart where uid="+uid+" and vid="+vid);
+	    		}
+	    		else if(QTY<0)
+	    		{
+	    			return;
+	    		}
+	    		else
+	    			stmt.execute("insert into shopping_cart (uid,gid,vid,qty) values("+uid+","+gid+","+vid+","+QTY+");");
+	    	}
+	    	catch(SQLException ex)
+	    	{
+	    		System.out.println(ex.getMessage());
+	    	}
+	    }
+	
 	public synchronized void execInsert(String sql) throws SQLException {
         ResultSet rs=null;
         System.out.println("--²åÈëÓï¾ä:"+sql);

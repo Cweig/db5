@@ -6,6 +6,7 @@
     <link href="../css/addCart.css" type="text/css" rel="stylesheet">
     <script type="text/javascript">
         function goToCart(uid) {
+        	alert(uid);
             window.open("./cart.jsp?Parauid="+uid);
         }
     </script>

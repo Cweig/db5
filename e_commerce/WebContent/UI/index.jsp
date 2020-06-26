@@ -18,29 +18,17 @@ $(function(){
     showSubCategory();
 })
 </SCRIPT>
-<script>
-<!--
-function setTab(name,cursel,n){
- for(i=1;i<=n;i++){
-  var menu=document.getElementById(name+i);
-  var con=document.getElementById("con_"+name+"_"+i);
-  menu.className=i==cursel?"hover":"";
-  con.style.display=i==cursel?"block":"none";
- }
-}
-//-->
-</script>
 
 <body bgcolor="F8F8FF"  >
 <div id="all">
  <div id="top">
    <div id="enter">
     <span>
-	   <a href="#">个人登录</a>|
+	   <a href="login.jsp">个人登录</a>|
 	   <a href="#">商家登录</a>|
 	   <a href="#">最近浏览</a>|
 	   <a href="#">关于我们</a>|
-	   <a href="#">个人免费注册</a>|
+	   <a href="register.jsp">个人免费注册</a>|
 	   <a href="#">商家免费注册</a>
    </span>
    </div>
@@ -62,7 +50,7 @@ function setTab(name,cursel,n){
 	   </div>
 	 </div>
      <div id="search_r">
-	   <a href="#"><img src="../img/shoplist.jpg" class="buy"  width="45px" height="45px"/></a>
+	   <a href=""><img src="../img/shoplist.jpg" class="buy"  width="45px" height="45px"/></a>
 	   <a href="#"><img src="../img/collect.jpg" class="collect" width="45px" height="45px"/></a>
 	 </div>
    </div>
