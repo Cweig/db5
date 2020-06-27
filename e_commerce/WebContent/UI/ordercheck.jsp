@@ -40,15 +40,16 @@ int size = pathList.length;
 %>
 <title>确认订单</title>
 </head>
-<body>
-	<form action="../Logic/makeOrderDB.jsp" method="post" class ='product-table'>
-	<div style="verstical-align:middle">
-	<div style="text-align:center">
-		<span class='text_item'>账号<%=uid %><br></span>
-		<span class='text_item'>收件人</span><div class='input_item'><input name="recipient" value="<%=request.getParameter("recipient") %>" class='input'></div>
-		<span class='text_item'>送货地址</span><div class='input_item'><input name="address" value="<%=request.getParameter("address")%>" class='input'></div>
-		<span class='text_item'>联系方式</span><div class='input_item'><input name="cellphone" value="<%=request.getParameter("cellphone") %>" class='input'></div>
-	</div>	
+<style>
+</style>
+<body class='bg'>
+<form action="../Logic/makeOrderDB.jsp" method="post" class ='product-table'>
+	<div class='Box'>
+		<div class='cont'>
+			<div class='item'><span class='text_item'>收件人</span><div class='input_item'><input name="recipient" value="<%=request.getParameter("recipient") %>" class='input'></div></div>
+			<div class='item'><span class='text_item'>送货地址</span><div class='input_item'><input name="address" value="<%=request.getParameter("address")%>" class='input'></div></div>
+			<div class='item'><span class='text_item'>联系方式</span><div class='input_item'><input name="cellphone" value="<%=request.getParameter("cellphone") %>" class='input'></div></div>
+		</div>	
 	</div>
 		<ul>
 			<li><div class="submit-con">
@@ -76,7 +77,7 @@ int size = pathList.length;
 							out.print(
 									  "<tr>"+
        				                      "<td class='cell-img'>"+
-           									"<a href=''showGoods?gid=' target='_blank'>"+
+           									"<a href='fullInfo?gid=' target='_blank'>"+
                				 					"<img class='p-img' src='../"+pathList[i]+"' alt='正在加载'>"+
             								"</a>"+
        									  "</td>"+
