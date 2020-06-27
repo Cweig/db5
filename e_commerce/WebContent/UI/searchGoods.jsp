@@ -5,27 +5,27 @@
   Time: 8:20
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" import="bean.Lin,java.sql.*" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="bean.Lin,java.sql.*" %>
 <html>
 <head>
     <title>搜索商品</title>
-    <link type="text/css" rel="stylesheet" href="../css/searchGoods.css">
+    <link rel="stylesheet" type="text/css" href="../css/searchGoods.css">
     <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
     <script type="text/javascript">
-        function send(m,g,l){
+        function send(m,g,goodsname,merchantsname){
             //alert('mid='+m+',cid='+c);
             //window.open("./fullInfo.jsp?mid="+m+"&gid="+g+"&uid="+l);
-            window.open("./fullInfo.jsp?mid="+m+"&gid="+g);
+            window.open("./fullInfo.jsp?mid="+m+"&gid="+g+"&goodsName="+goodsname+"&merchantsName="+merchantsname);
         }
         function changeShowCol() {
             if($('.col').is('.showone')){
                 $('.col').removeClass('showone');
                 $('.col').addClass('showtwo');
-                $('#changeCol').attr('value','单列显示');
+                $('.displaymess').text('单列显示');
             }else {
                 $('.col').addClass('showone');
                 $('.col').removeClass('showtwo');
-                $('#changeCol').attr('value','双列显示');
+                $('.displaymess').text('双列显示');
             }
         }
     </script>
@@ -39,18 +39,21 @@
     }
     //如果字符串是空字符，就不展示
 %>
-<% String uid=(String) application.getAttribute("activelogin");    request.setCharacterEncoding("utf-8");%>
+<% String uid=(String) application.getAttribute("activelogin");%>
+<%--<%
+    uid=(String)request.getAttribute("login");
+%>--%>
 <div style="width: 100%">
     <a class="displaymess" onclick="changeShowCol()">双列显示</a>
+    <%--<input type="button" value="双行显示" id="changeCol" onclick="changeShowCol()" style="display: inline-block;">--%>
     <h1 style="text-align: center;">“<%=request.getParameter("word")%>”的搜索结果：</h1>
+
 </div>
 
 <%
     Lin linformerchantsname=new Lin();
     Lin linforgoodslist=new Lin();
-
     String word=request.getParameter("word");
-    System.out.println(word);
     //获取查询的关键词
 
     String searchGidSql="select * from (version natural join goods) where name like \"%"+word+"%\"";
@@ -58,10 +61,9 @@
     //在版本表中查询这个商品的详细信息
 
     ResultSet rs=linforgoodslist.getStmt().executeQuery(searchGidSql);
-    String price;
     while (rs.next()){
-    	 price = rs.getString("price");
-         price = price.subSequence(0, price.length()-2)+"."+price.substring(price.length()-2);
+        String price = rs.getString("price");
+        price = price.subSequence(0, price.length()-2)+"."+price.substring(price.length()-2);
 %>
 
 <div style="width: 100% ">
@@ -98,8 +100,10 @@
         name.close();
     }
     rs.close();
-    linformerchantsname.close();
-    linforgoodslist.close();
+    linformerchantsname.getStmt().close();
+    linforgoodslist.getStmt().close();
+
+
 %>
 </div>
 </body>

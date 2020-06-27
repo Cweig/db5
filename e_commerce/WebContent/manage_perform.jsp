@@ -64,7 +64,7 @@
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
             <h3>首页</h3>
-            <p>null</p>
+            <h1>欢迎进入网上商城管理页面！！</h1>
         </div>
 
     </div>

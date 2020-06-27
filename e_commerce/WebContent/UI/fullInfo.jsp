@@ -187,8 +187,8 @@ try{
 					<input type="button" id="a_<%=vid%>" onclick="addCartv2('<%=vid%>','<%=i%>','<%=goodsName %>')" value="加入购物车">
 					<input type="button" id="b_<%=vid%>" onclick="buyNowv2(<%=vid%>,'<%=rs.getString(4)%>',<%=i%>)" value="立即购买">
     				<div id="shuliang" >
-        				<input type="button" id="dis<%=i%>" value="减一份" disabled="disabled" onclick="disv2(<%=i%>)" style="display: inline-block">
-        				<p id="shu<%=i%>" style="display: inline-block">0</p>
+        				<input type="button" id="dis<%=i%>" value="减一份"  onclick="disv2(<%=i%>)" style="display: inline-block">
+        				<p id="shu<%=i%>" style="display: inline-block">1</p>
         				<input type="button" id="add<%=i%>" value="加一份" onclick="addv2(<%=i%>)" style="display: inline-block">
     				</div>
     				<br>

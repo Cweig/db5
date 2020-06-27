@@ -114,19 +114,23 @@
     %>
         <li>
             <div class="goodname" style="height: auto">
-                <p style="display: inline-block">商品名：</p>
-                <form id=<%="form"+index %> action = 'fullInfo.jsp' target="_blank" method='post'>
+                <p style="display: inline-block">
+                	商品名：
+                </p>	
                 	<myc style="display: inline-block" onclick="send(<%=index%>)">
                     	<%=res.getString("name")%>
                	 	</myc>
+                <p style="display: inline-block">
+                             	描述：<%=res.getString("description")%>
+                </p>
+                <form id=<%="form"+index %> action = 'fullInfo.jsp' target="_blank" method='post'>
+
                		<input type='hidden' name='goodsName' value=<%=res.getString("name")%>>
                		<input type='hidden' name='gid' value=<%=res.getString("gid")%>>
                		<input type='hidden' name='mid' value=<%=midList.get(i)%>>
            	 		<input type='hidden' name='merchantsName' value=<%=nameList.get(i)%>>
            	 	</form>
-                <p style="display: inline-block">
-                    描述：<%=res.getString("description")%>
-                </p>
+
             </div>
         </li>
     <%

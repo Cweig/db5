@@ -8,6 +8,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>填写订单信息</title>
 </head>
+<style>
+	body
+	{
+		background-image:url("../img/background.jpg");
+		background-size:cover;
+		width:100%;
+		height:100%;
+		min-height: 60vh;
+	}
+</style>
 <jsp:useBean id="db" class="bean.DBBean" scope="page"/>
 <%
 System.out.println("\nfinishOrderInf:");
@@ -50,7 +60,7 @@ finally
 	db.close();
 }
 %>
-<body background='../img/background.jpg'>
+<body >
 <div class="Box">
 	<div class="cont">
 		<form action='../Logic/createOrder.jsp' method='post'  name ='form' onsubmit="return check()">
